@@ -23,7 +23,9 @@ jobs:
           modules: 'qtcharts qtwebsockets'
 
       - name: Configure
-        run: cmake -B build -DCMAKE_BUILD_TY
+        run: >
+	  cmake -B build
+          -DCMAKE_BUILD_TY
 
       - name: Build
         run: cmake --build build --parallel
