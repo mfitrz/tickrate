@@ -94,9 +94,11 @@ target_link_libraries(orderbook-visualizer
         "${WEBVIEW2_DIR}/lib/WebView2Loader.dll.lib"
 )
 
-# Deploy Qt TLS backend plugins (windeployqt misses these on MSVC)
+# Deploy Qt TLS backend plugins (windeployqt misses these on MSVC).
+# Qt6_DIR is set by find_package to <Qt_install>/lib/cmake/Qt6; root is 3 levels up.
 if(MSVC)
-    set(QT_TLS_PLUGIN_DIR "${CMAKE_PREFIX_PATH}/plugins/tls")
+    get_filename_component(QT_INSTALL_ROOT "${Qt6_DIR}/../../.." ABSOLUTE)
+    set(QT_TLS_PLUGIN_DIR "${QT_INSTALL_ROOT}/plugins/tls")
     add_custom_command(TARGET orderbook-visualizer POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory
             "$<TARGET_FILE_DIR:orderbook-visualizer>/tls"
@@ -110,13 +112,15 @@ if(MSVC)
     )
 endif()
 
-# Copy WebView2Loader.dll next to the executable at build time
-add_custom_command(TARGET orderbook-visualizer POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${WEBVIEW2_DIR}/lib/WebView2Loader.dll"
-        "$<TARGET_FILE_DIR:orderbook-visualizer>/WebView2Loader.dll"
-    COMMENT "Copying WebView2Loader.dll to output directory"
-)
+# Copy WebView2Loader.dll next to the executable at build time (skipped if not present).
+if(EXISTS "${WEBVIEW2_DIR}/lib/WebView2Loader.dll")
+    add_custom_command(TARGET orderbook-visualizer POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${WEBVIEW2_DIR}/lib/WebView2Loader.dll"
+            "$<TARGET_FILE_DIR:orderbook-visualizer>/WebView2Loader.dll"
+        COMMENT "Copying WebView2Loader.dll to output directory"
+    )
+endif()
 
 # ── Unit tests ────────────────────────────────────────────────────────────────
 enable_testing()
