@@ -20,7 +20,7 @@ jobs:
     		host: windows
     		target: desktop
     		arch: win64_msvc2022_64
-    		modules: 'qt5compat qtcharts qtwebsockets''
+    		modules: 'qtcharts qtwebsockets'
 
       - name: Configure
         run: cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
