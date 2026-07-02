@@ -16,19 +16,17 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.5.3'
+          version: '6.8.3'
           host: windows
           target: desktop
-          arch: win64_msvc2019_64
+          arch: win64_msvc2022_64
           modules: 'qtcharts qtwebsockets'
 
       - name: Configure
-        run: >
-	  cmake -B build
-          -DCMAKE_BUILD_TY
+        run: cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
       - name: Build
-        run: cmake --build build --parallel
+        run: cmake --build build --parallel --config RelWithDebInfo
 
       - name: Test
         working-directory: build
