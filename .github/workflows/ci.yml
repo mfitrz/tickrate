@@ -14,19 +14,19 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Qt
-  	uses: jurplel/install-qt-action@v4
-  	with:
-    		version: '6.5.3'
-    		host: windows
-    		target: desktop
-    		arch: win64_msvc2022_64
-    		modules: 'qtcharts qtwebsockets'
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.5.3'
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: 'qtcharts qtwebsockets'
 
       - name: Configure
-        run: cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+        run: cmake -B build -DCMAKE_BUILD_TY
 
       - name: Build
-        run: cmake --build build --parallel --config RelWithDebInfo
+        run: cmake --build build --parallel
 
       - name: Test
         working-directory: build
