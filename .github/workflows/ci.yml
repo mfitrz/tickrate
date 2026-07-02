@@ -23,12 +23,10 @@ jobs:
           modules: 'qtcharts qtwebsockets'
 
       - name: Configure
-        run: >
-	  cmake -B build
-          -DCMAKE_BUILD_TY
+        run: cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
       - name: Build
-        run: cmake --build build --parallel
+        run: cmake --build build --parallel --config RelWithDebInfo
 
       - name: Test
         working-directory: build
